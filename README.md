@@ -14,7 +14,7 @@ A Flask web application that displays venue schedules and free times visually fo
 
 1. Clone the repository:
    ```bash
-   git clone (https://github.com/Glatinis/apspace-venue-fetcher.git)
+   git clone https://github.com/Glatinis/apspace-venue-fetcher.git
    cd apspace-venue-fetcher
    ```
 
