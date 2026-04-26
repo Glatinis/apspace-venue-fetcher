@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venue Schedule Flow</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">APSPACE Venue Schedule</p>
+        <h1>Pick a venue and day</h1>
+      </div>
+      <div class="legend">
+        <span class="legend-item legend-class"></span> Class
+        <span class="legend-item legend-free"></span> Free time
+      </div>
+    </header>
+
+    <form class="search-bar" method="get">
+      <label>
+        Venue
+        <select name="venue" onchange="this.form.submit()">
+          {% for venue in venues %}
+            <option value="{{ venue }}" {% if venue == selectedVenue %}selected{% endif %}>{{ venue }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>
+        Date
+        <select name="date" onchange="this.form.submit()">
+          {% for date in weekDates %}
+            <option value="{{ date.isoformat() }}" {% if date == selectedDate %}selected{% endif %}>{{ date.strftime('%a %d %b') }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <button type="submit" name="all_auditoriums" value="1">All Auditoriums</button>
+      <button type="submit" name="refresh" value="1">Refresh</button>
+    </form>
+
+    <section class="summary-card">
+      <div>
+        <h2>{{ selectedVenue }}</h2>
+        <p>{{ selectedDate.strftime('%A, %B %d, %Y') }}</p>
+      </div>
+      <div class="summary-badge">{{ total_blocks }} blocks</div>
+    </section>
+
+    <section class="timeline-card">
+      <div class="timeline-labels">
+        {% for hour in range(8, 19) %}
+          <div>{{ '%02d:00'|format(hour) }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="timeline-rows">
+        {% if schedule %}
+          {% for row in schedule %}
+            <div class="timeline-row">
+              <div class="timeline-row-label">{{ row.venue }}</div>
+              <div class="timeline-row-track">
+                {% if row.blocks %}
+                  <div class="timeline-track-inner">
+                    {% for block in row.blocks %}
+                      <div class="timeline-block timeline-block-{{ block.type }}"
+                           style="left: {{ block.left }}%; width: {{ block.width }}%;">
+                        <div class="timeline-block-title">
+                          {% if block.type == 'class' %}
+                            {{ block.module }}
+                          {% else %}
+                            Free time
+                          {% endif %}
+                        </div>
+                        <div class="timeline-block-meta">
+                          {{ block.start_short }} - {{ block.end_short }}
+                          {% if block.type == 'class' %}
+                            <span class="timeline-block-sub">{{ block.lecturer }}</span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="timeline-empty">No classes scheduled for this venue today.</div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="timeline-empty">No class blocks for this venue and day.</div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="detail-grid">
+      <article>
+        <h3>Schedule details</h3>
+        {% if schedule %}
+          <ul class="detail-list">
+            {% for row in schedule %}
+              <li class="detail-row-label">{{ row.venue }}</li>
+              {% for block in row.blocks %}
+                <li class="detail-item detail-item-{{ block.type }}">
+                  <span class="detail-time">{{ block.start_short }} - {{ block.end_short }}</span>
+                  <span class="detail-text">
+                    {% if block.type == 'class' %}
+                      {{ block.module }} — {{ block.lecturer }}
+                    {% else %}
+                      Free slot
+                    {% endif %}
+                  </span>
+                </li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No schedule details available.</p>
+        {% endif %}
+      </article>
+    </section>
+  </div>
+</body>
+</html>
