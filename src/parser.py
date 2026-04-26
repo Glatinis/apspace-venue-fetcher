@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from utils import DATA_FILE
+from .utils import DATA_FILE
 
 def getClasses(venues=None, minDate=None, maxDate=None, sortByTime=True):
     """

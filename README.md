@@ -25,7 +25,7 @@ A Flask web application that displays venue schedules and free times visually fo
 
 3. Run the application:
    ```bash
-   python server.py
+   python app.py
    ```
 
 4. Open your browser to `http://localhost:5000`
@@ -39,13 +39,15 @@ A Flask web application that displays venue schedules and free times visually fo
 
 ## Project Structure
 
-- `server.py`: Flask application and routes
-- `fetcher.py`: Handles fetching timetable data from the API
-- `parser.py`: Parses and filters class data
-- `utils.py`: Utility functions for data loading and date handling
-- `schedule.py`: Builds timeline blocks for visualization
-- `templates/index.html`: HTML template for the web interface
-- `static/style.css`: CSS styles for the timeline and layout
+- `app.py`: Flask application and routes
+- `src/`: Main application package
+  - `fetcher.py`: Handles fetching timetable data from the API
+  - `parser.py`: Parses and filters class data
+  - `utils.py`: Utility functions for data loading and date handling
+  - `schedule.py`: Builds timeline blocks for visualization
+  - `templates/index.html`: HTML template for the web interface
+  - `static/style.css`: CSS styles for the timeline and layout
+  - `timetable.json`: Cached timetable data
 
 ## Requirements
 

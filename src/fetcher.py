@@ -1,6 +1,6 @@
 import json
 import requests
-from utils import DATA_FILE
+from .utils import DATA_FILE
 
 URL = "https://s3-ap-southeast-1.amazonaws.com/open-ws/weektimetable"
 

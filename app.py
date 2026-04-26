@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
-from parser import getClasses
-from fetcher import refreshTimetables
-from utils import ALL_AUDITORIUMS_LABEL, get_week_dates, load_venue_list, parse_date
-from schedule import build_timeline_blocks
+from src.parser import getClasses
+from src.fetcher import refreshTimetables
+from src.utils import ALL_AUDITORIUMS_LABEL, get_week_dates, load_venue_list, parse_date
+from src.schedule import build_timeline_blocks
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
 
 
 @app.route("/", methods=["GET"])
